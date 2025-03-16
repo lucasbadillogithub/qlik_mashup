@@ -1,28 +1,32 @@
 /* main.js - Qlik Sense Mashup for Qlik Cloud */
 
-/* Configuration settings for Qlik Cloud connection */
+/* 1. Configure Qlik Cloud connection settings */
 var config = {
   host: "2mfrj5yb8kxk6yq.eu.qlikcloud.com",
   prefix: "/",
-  port: 443, // Secure HTTPS port
-  isSecure: true
+  port: 443, // Use secure HTTPS port
+  isSecure: true,
+  webIntegrationId: 'uj6ImLFmzPiOxRZjNZYDKjw0gfzW2tmb'
 };
 
-/* Configure require.js to load Qlik resources */
+/* 2. Configure require.js with the proper baseUrl and paths */
 require.config({
-  baseUrl: (config.isSecure ? "https://" : "http://") + config.host + (config.port ? ":" + config.port : "") + config.prefix + "resources",
+  baseUrl: (config.isSecure ? "https://" : "http://") +
+           config.host +
+           (config.port ? ":" + config.port : "") +
+           config.prefix +
+           "resources",
   paths: {
     qlik: "js/qlik"
   }
 });
 
-/* Main require.js block to load Qlik and setup the mashup */
+/* 3. Load Qlik and set up your mashup */
 require(["qlik"], function(qlik) {
 
-  // Global error handling
+  // Global error handling: Display errors in the #popupText element.
   var control = false;
   qlik.on("error", function(error) {
-    // Append error message to a designated popup element (make sure your HTML contains these elements)
     $('#popupText').append(error.message + "<br>");
     if (!control) {
       control = true;
@@ -30,10 +34,10 @@ require(["qlik"], function(qlik) {
     }
   });
 
-  // Prevent body scrolling (ensure your HTML/CSS is set up accordingly)
+  // Optional: Prevent body scrolling (adjust based on your layout needs)
   $("body").css("overflow", "hidden");
 
-  // App UI constructor to manage UI elements (title, bookmarks, selections, etc.)
+  // AppUi constructor for managing UI elements (title, bookmarks, selections, etc.)
   function AppUi(app) {
     var me = this;
     this.app = app;
@@ -42,7 +46,9 @@ require(["qlik"], function(qlik) {
     });
     app.getAppLayout(function(layout) {
       $("#title").html(layout.qTitle);
-      $("#title").attr("title", "Last reload: " + layout.qLastReloadTime.replace(/T/, ' ').replace(/Z/, ' '));
+      $("#title").attr("title", "Last reload: " +
+        layout.qLastReloadTime.replace(/T/, ' ').replace(/Z/, ' ')
+      );
     });
     app.getList('SelectionObject', function(reply) {
       $("[data-qcmd='back']").toggleClass('disabled', reply.qSelectionObject.qBackCount < 1);
@@ -87,7 +93,8 @@ require(["qlik"], function(qlik) {
           app.unlockAll();
           break;
         case 'createBm':
-          var title = $("#bmtitle").val(), desc = $("#bmdesc").val();
+          var title = $("#bmtitle").val(),
+              desc = $("#bmdesc").val();
           app.bookmark.create(title, desc);
           $('#createBmModal').modal('hide');
           break;
@@ -95,11 +102,11 @@ require(["qlik"], function(qlik) {
     });
   }
 
-  // Open the Qlik Sense app using your app ID
+  // 4. Open your Qlik Sense app using the provided app ID.
   var app = qlik.openApp('f31aa1ed-df09-4047-83bd-1935ebb903d0', config);
 
-  // Embed Qlik Sense objects into HTML elements
-  // Ensure your index.html contains elements with these corresponding IDs
+  // 5. Embed Qlik Sense objects into corresponding HTML elements.
+  // Make sure these object IDs (e.g., 'HTSjhJ', 'TasyZc', etc.) match those in your app.
   app.getObject('QV03', 'jpYgSG');
   app.getObject('QV05', 'FCsqWJ');
   app.getObject('CurrentSelections', 'CurrentSelections');
@@ -107,7 +114,7 @@ require(["qlik"], function(qlik) {
   app.getObject('QV02', 'TasyZc');
   app.getObject('QV01', 'HTSjhJ');
 
-  // Initialize the App UI
+  // 6. Initialize the App UI (if applicable)
   if (app) {
     new AppUi(app);
   }
