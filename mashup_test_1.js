@@ -10,16 +10,10 @@ var config = {
 };
 
 /* 2. Configure require.js with the proper baseUrl and paths */
-require.config({
-  baseUrl: (config.isSecure ? "https://" : "http://") +
-           config.host +
-           (config.port ? ":" + config.port : "") +
-           config.prefix +
-           "resources",
-  paths: {
-    qlik: "js/qlik"
-  }
-});
+require.config( {
+    baseUrl: ( config.isSecure ? "https://" : "http://" ) + config.host + (config.port ? ":" + config.port : "") + config.prefix + "resources",
+    webIntegrationId: config.webIntegrationId
+} );	
 
 /* 3. Load Qlik and set up your mashup */
 require(["qlik"], function(qlik) {
