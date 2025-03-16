@@ -7,6 +7,13 @@
  */
 var prefix = window.location.pathname.substr(0, window.location.pathname.toLowerCase().lastIndexOf("/extensions") + 1);
 
+require.config({
+  baseUrl: "https://2mfrj5yb8kxk6yq.eu.qlikcloud.com/resources",
+  paths: {
+    qlik: "js/qlik"
+  }
+});
+
 var config = {
 	host: window.location.hostname,
 	prefix: prefix,
