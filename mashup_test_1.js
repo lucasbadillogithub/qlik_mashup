@@ -102,7 +102,8 @@ require(["js/qlik"], function (qlik) {
 
 	//callbacks -- inserted here --
 	//open apps -- inserted here --
-	var app = qlik.openApp('APP/STG_PRICEINTELLIGENCE_02_DASHBOARD.qvf', config);
+	// var app = qlik.openApp('APP/STG_PRICEINTELLIGENCE_02_DASHBOARD.qvf', config);
+	var app = qlik.openApp('f31aa1ed-df09-4047-83bd-1935ebb903d0', config);
 
 
 	//get objects -- inserted here --
