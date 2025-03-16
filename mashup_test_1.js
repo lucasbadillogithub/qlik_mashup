@@ -16,7 +16,15 @@ require.config( {
 } );	
 
 /* 3. Load Qlik and set up your mashup */
-require(["qlik"], function(qlik) {
+require( ["js/qlik"], function ( qlik ) {
+	qlik.on( "error", function ( error ) {
+		$( '#popupText' ).append( error.message + "<br>" );
+		$( '#popup' ).fadeIn( 1000 );
+	} );
+  
+	$( "#closePopup" ).click( function () {
+		$( '#popup' ).hide();
+	} );
 
   // Global error handling: Display errors in the #popupText element.
   var control = false;
@@ -95,7 +103,7 @@ require(["qlik"], function(qlik) {
       }
     });
   }
-
+  
   // 4. Open your Qlik Sense app using the provided app ID.
   var app = qlik.openApp('f31aa1ed-df09-4047-83bd-1935ebb903d0', config);
 
